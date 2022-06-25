@@ -1,110 +1,107 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <locale.h>
+#include <ctype.h>
+
+int toInt(char * digit) {
+
+    int number = *digit - '0';
+    return number;
+}
+
+void erroMessage(){
+    printf("[!] Valores inválidos! Tente novamente\n\n");
+}
+
+void ordemMatriz(int *linhas, int *colunas){
+    char l_input, c_input;
+    int test = 0, loop = 1;
+
+    do
+    {
+        printf("[*] Linhas: ");
+        _flushall();
+        scanf("%c",&l_input);
+
+        printf("[*] Colunas: ");
+        _flushall();
+        scanf("%c",&c_input);
+
+        if(isalpha(l_input) || isalpha(c_input)){
+            erroMessage();
+            test++;
+        
+        }else if(ispunct(l_input) || ispunct(c_input)){
+            erroMessage();
+            test++;
+        
+        }else if(isdigit(l_input) || isdigit(c_input)){
+            *linhas = toInt(&l_input);
+            *colunas = toInt(&c_input);
+
+            if(*linhas <= 0 || *colunas <= 0){
+                erroMessage();
+                test++;
+            }
+        }
+
+
+        if(!(test != 0)){
+         loop = 0;
+        }
+        
+        test--;
+
+    } while (loop);
+    
+   
+
+}
+
+void gerarMatriz(int *linhas, int *colunas, float **matriz){
+
+    matriz = (float **)malloc(*linhas * sizeof(float));
+
+    for(int i = 0; i < *linhas; i++){
+        matriz[i] = (float *)malloc(*colunas * sizeof(float));
+    }
+
+
+    for(int i = 0; i < *linhas; i++){
+        printf("|");
+
+        for(int j = 0; j < *colunas; j++){
+            printf("a%d%d\t", i + 1, j + 1);
+        }
+
+        printf("|\n");
+    }
+
+
+
+}
+
 
 void main(){
 
-
-
-    int linhas,
-    colunas,
-    length;
-
-    float valor;
-
-    char option;
-
     
-    printf("%s\n",setlocale(LC_ALL, "Portuguese"));
+    int linhas, colunas;
+    float **matriz;
 
-    printf("+++++++++++++++++++++++++++++++++++++++++\n");
-    printf("|             MATRIZ GENERATOR           |\n");
-    printf("+++++++++++++++++++++++++++++++++++++++++\n");
+    printf("+++++++++++++++++++++++++++++++++++++++++++++++++\n");
+    printf("|              MATRIX GENERATOR                 |\n");
+    printf("+++++++++++++++++++++++++++++++++++++++++++++++++\n");
+
+    setlocale(LC_ALL,"Portuguese");
+
+    //Ordem da Matriz
+    printf("[*] Informe a ordem da matriz: \n");
+    ordemMatriz(&linhas, &colunas); 
+
+    printf("[+] Ordem da matriz: %d x %d\n", linhas, colunas);
 
 
-    do
-    {
-        
-        printf("[*] Informe a dimeno da matriz: \n");
-
-        printf("[*] Linhas: ");
-        scanf("%d", &linhas);
-
-        printf("[*] Colunas: ");
-        scanf("%d", &colunas);
-
-        if(linhas <= 0 || colunas <= 0)
-            printf("[-] Informe valores vlidos! Tentente novamente...\n\n");
-
-    } while (linhas <= 0 || colunas <= 0);
+    //Gerar Matriz
+    gerarMatriz(&linhas, &colunas, matriz);
     
-    printf("\n[Gerando matriz...]\n");
-
-    float matriz[linhas][colunas];
-    //length = linhas * colunas;
-    // mostrando matriz
-    printf("[Mostrando Matriz...]\n\n");
-
-    for (int i = 0; i < linhas; i++){
-        printf("|");
-        for(int j = 0; j < colunas; j++){
-            printf("a%d%d\t", i + 1, j + 1);
-        }
-        printf("|\n");
-    }   
-
-    
-
-
-    //Preenchimento da matriz
-
-    do
-    {
-        printf("\n[?] Preencher matriz manualmente?(s/n): ");
-        _flushall();
-        scanf("%c", &option);
-        
-        if((option != 'n') && (option != 's'))
-            printf("[!] ERRO: Infomre uma opo vlida! Tente novamente!\n");
-
-    } while ((option != 'n') && (option != 's'));
-    
-
-    switch (option)
-    {
-    case 'n' :
-        break;
-    
-    case 's':
-        
-        printf("\n[*] Preencher Matriz\n");
-        printf("[*] Fornea os valores para cada posio: \n");
-
-
-        for(int i = 0; i < linhas; i++){
-
-            for(int j = 0; j < colunas; j++){
-                printf("    a[%d][%d] = ", i + 1, j + 1);
-                scanf("%f", &valor);
-
-                matriz[i][j] = valor;
-            }
-
-        }
-
-        printf("\n[Mostrando Matriz...]\n\n");
-
-    for (int i = 0; i < linhas; i++){
-        printf("|\t");
-        for(int j = 0; j < colunas; j++){
-            printf("%.0f\t", matriz[i][j]);
-        }
-        printf("|\n");
-    }   
-
-    
-
-    default:
-        break;
-    }
 }
