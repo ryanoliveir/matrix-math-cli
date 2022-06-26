@@ -166,6 +166,27 @@ void mostrarMatriz(int **matriz, int *linhas, int *colunas){
     }
 }
 
+void calculoDeterminante(int **matriz, int *linhas, int *colunas){
+    
+
+    switch (*linhas)
+    {
+    case 2:
+        
+        for (int i = 0; i < *linhas; i++){
+            printf("[+] Principal: a[%d][%d] \n", i+1, i+1);            
+        }
+
+        for (int i = 0; i < *linhas; i++){
+            printf("[+] Secundária: a[%d][%d] \n", i+1, (*linhas -1 -i) + 1);
+        }
+        break;
+    
+    default:
+        break;
+    }
+}
+
 void main(){
 
     char opcao;
@@ -209,6 +230,17 @@ void main(){
             printf("[-] Algo deu errado!");
             break;
     }
+
+
+    // Veficar Matriz Quadrada
+
+    if(linhas == colunas){
+        printf("[+] Matriz quadrada. Calculando determinante...\n");
+        calculoDeterminante(matriz, &linhas, &colunas);
+    }else{
+        printf("[+] Matriz não quadrada. Não é possível calcular o determinante\n");
+    }
+    
 
     
 }
