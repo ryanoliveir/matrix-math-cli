@@ -166,25 +166,72 @@ void mostrarMatriz(int **matriz, int *linhas, int *colunas){
     }
 }
 
-void calculoDeterminante(int **matriz, int *linhas, int *colunas){
-    
+void classMatriz(int *determinante){
 
-    switch (*linhas)
-    {
+    if(determinante != 0){
+        printf("[+] Classificaçao: MATRIZ NÃO SINGULAR");
+    }else{
+        printf("[+] Classificaçao: MATRIZ SINGULAR");
+    }
+}
+void calculoDeterminante(int **matriz, int *linhas){
+    
+    int dPrincipal = 1, 
+    dSecundaria = 1, 
+    determinante = 0,
+    d1, d2, d3, d4, d5, d6;
+
+    
+    switch (*linhas){
+    //Ordem 1
+    case 1:
+        printf("[+] Ordem 1 ");
+        printf("[+] Determinante = %d", matriz[0][0]);
+        break;
+    //Ordem 2
     case 2:
         
+        printf("[+] Ordem 2 ");
         for (int i = 0; i < *linhas; i++){
-            printf("[+] Principal: a[%d][%d] \n", i+1, i+1);            
+            // printf("[+] Principal: a[%d][%d] \n", i+1, i+1);
+            dPrincipal *= matriz[i][i];
         }
 
         for (int i = 0; i < *linhas; i++){
-            printf("[+] Secundária: a[%d][%d] \n", i+1, (*linhas -1 -i) + 1);
+            // printf("[+] Secundária: a[%d][%d] \n", i+1, (*linhas -1 -i) + 1);
+            dSecundaria *= matriz[i][*linhas -1 -i]; 
         }
+        determinante = dPrincipal - dSecundaria;
+        printf("[+] Determinante = %d\n", determinante);
+
         break;
     
+    case 3:
+
+        printf("[+] Ordem 3 \n");
+
+        d1 = matriz[0][0] * matriz[1][1] * matriz[2][2];
+        d2 = matriz[1][0] * matriz[2][1] * matriz[0][2];
+        d3 = matriz[2][0] * matriz[0][1] * matriz[1][2];
+
+        d4 = matriz[2][0] * matriz[1][1] * matriz[0][2];
+        d5 = matriz[0][0] * matriz[2][1] * matriz[1][2];
+        d6 = matriz[1][0] * matriz[0][1] * matriz[2][2];
+
+
+        determinante = d1 + d2 + d3 - d4 - d5 - d6;
+
+        printf("[+] Determinante: %d\n", determinante);
+        break;
+
+
+
     default:
         break;
     }
+
+    classMatriz(&determinante);
+
 }
 
 void main(){
@@ -236,7 +283,7 @@ void main(){
 
     if(linhas == colunas){
         printf("[+] Matriz quadrada. Calculando determinante...\n");
-        calculoDeterminante(matriz, &linhas, &colunas);
+        calculoDeterminante(matriz, &linhas);
     }else{
         printf("[+] Matriz não quadrada. Não é possível calcular o determinante\n");
     }
