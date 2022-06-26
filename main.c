@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <ctype.h>
+#include <time.h>
 
 int toInt(char * digit) {
 
@@ -58,12 +59,12 @@ void ordemMatriz(int *linhas, int *colunas){
 
 }
 
-void gerarMatriz(int *linhas, int *colunas, float **matriz){
+int **gerarMatriz(int *linhas, int *colunas, int **matriz){
 
-    matriz = (float **)malloc(*linhas * sizeof(float));
+    matriz =(int **)malloc(*linhas * sizeof(int));
 
     for(int i = 0; i < *linhas; i++){
-        matriz[i] = (float *)malloc(*colunas * sizeof(float));
+        matriz[i] =(int *)malloc(*colunas * sizeof(int));
     }
 
 
@@ -77,16 +78,100 @@ void gerarMatriz(int *linhas, int *colunas, float **matriz){
         printf("|\n");
     }
 
+    return matriz;
+
 
 
 }
 
+void selectOption(char *opcao){
+
+    do
+    {
+        printf("[*] Preencher matriz manualmente?(s/n) ");
+        _flushall();
+        scanf("%c",opcao);
+
+        if((*opcao != 'S' && *opcao != 's') && (*opcao != 'n' && *opcao != 'N'))
+            erroMessage();
+
+        
+
+        switch(*opcao){
+            case 'S':
+                *opcao = 's';
+                break;
+            case 'N':
+                *opcao = 'n';
+                break;
+
+            default:
+                break;
+        }
+
+
+    } while ((*opcao != 'S' && *opcao != 's') && (*opcao != 'n' && *opcao != 'N'));
+    
+
+}
+
+void preencherMatriz(int **matriz, char *opcao, int *linhas, int *colunas){
+
+    switch(*opcao){
+        case 's':
+            printf("[*] Preencher Matriz Manualmente\n");
+    
+            for(int i = 0; i < *linhas; i++){
+                for(int j = 0; j < *colunas; j++){
+
+                    printf("a[%d][%d] = ", i+1, j+1 );
+                    scanf("%d", &matriz[i][j]);
+                }
+            }
+            break;
+
+        case 'n':
+            printf("[*] Preencher Matriz Automaticmente\n");
+            srand(time(NULL));
+            int random_number;
+            for(int i = 0; i < *linhas; i++){
+                for(int j = 0; j < *colunas; j++){
+
+                    printf("a[%d][%d] = ", i+1, j+1 );
+                    random_number = rand() % 100;
+                    printf("%d\n", random_number);
+
+                    matriz[i][j] = random_number;
+                }
+            }
+            break;
+        
+        default:
+            break;
+
+    }
+
+
+    
+}
+
+void mostrarMatriz(int **matriz, int *linhas, int *colunas){
+
+    for(int i=0; i < *linhas; i++){
+        printf("|");
+        for(int j=0; j < * colunas; j++){
+            printf("%d\t", matriz[i][j]);
+        }
+        printf("|\n");
+    }
+}
 
 void main(){
 
-    
+    char opcao;
     int linhas, colunas;
-    float **matriz;
+    int **matriz;
+
 
     printf("+++++++++++++++++++++++++++++++++++++++++++++++++\n");
     printf("|              MATRIX GENERATOR                 |\n");
@@ -102,6 +187,28 @@ void main(){
 
 
     //Gerar Matriz
-    gerarMatriz(&linhas, &colunas, matriz);
+    matriz = gerarMatriz(&linhas, &colunas, matriz);
+
+
+    //Preencher Matriz Manualmente 
+
+    selectOption(&opcao);
+
+    switch(opcao){
+        case 's':
+            preencherMatriz(matriz, &opcao, &linhas, &colunas);
+            mostrarMatriz(matriz, &linhas, &colunas);
+            break;
+            
+        case 'n':
+            preencherMatriz(matriz, &opcao, &linhas, &colunas);
+            mostrarMatriz(matriz, &linhas, &colunas);
+            break;
+
+        default:
+            printf("[-] Algo deu errado!");
+            break;
+    }
+
     
 }
