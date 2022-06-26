@@ -11,7 +11,7 @@ int toInt(char * digit) {
 }
 
 void erroMessage(){
-    printf("[!] Valores inválidos! Tente novamente\n\n");
+    printf("[!] Valores inválidos! Tente novamente\n");
 }
 
 void ordemMatriz(int *linhas, int *colunas){
@@ -67,12 +67,12 @@ int **gerarMatriz(int *linhas, int *colunas, int **matriz){
         matriz[i] =(int *)malloc(*colunas * sizeof(int));
     }
 
-
+    printf("\n\n[  MATRIZ GENÉRICA  ]\n");
     for(int i = 0; i < *linhas; i++){
-        printf("|");
+        printf("| ");
 
         for(int j = 0; j < *colunas; j++){
-            printf("a%d%d\t", i + 1, j + 1);
+            printf("a%d%d  ", i + 1, j + 1);
         }
 
         printf("|\n");
@@ -88,7 +88,7 @@ void selectOption(char *opcao){
 
     do
     {
-        printf("[*] Preencher matriz manualmente?(s/n) ");
+        printf("\n\n[*] Preencher matriz manualmente?(s/n) ");
         _flushall();
         scanf("%c",opcao);
 
@@ -124,7 +124,7 @@ void preencherMatriz(int **matriz, char *opcao, int *linhas, int *colunas){
             for(int i = 0; i < *linhas; i++){
                 for(int j = 0; j < *colunas; j++){
 
-                    printf("a[%d][%d] = ", i+1, j+1 );
+                    printf("    a[%d][%d] = ", i+1, j+1 );
                     scanf("%d", &matriz[i][j]);
                 }
             }
@@ -137,8 +137,8 @@ void preencherMatriz(int **matriz, char *opcao, int *linhas, int *colunas){
             for(int i = 0; i < *linhas; i++){
                 for(int j = 0; j < *colunas; j++){
 
-                    printf("a[%d][%d] = ", i+1, j+1 );
-                    random_number = rand() % 100;
+                    printf("   a[%d][%d] = ", i+1, j+1 );
+                    random_number = rand() % 12;
                     printf("%d\n", random_number);
 
                     matriz[i][j] = random_number;
@@ -156,9 +156,9 @@ void preencherMatriz(int **matriz, char *opcao, int *linhas, int *colunas){
 }
 
 void mostrarMatriz(int **matriz, int *linhas, int *colunas){
-
+    printf("\n\n[    MATRIZ   ]\n");
     for(int i=0; i < *linhas; i++){
-        printf("|");
+        printf("| ");
         for(int j=0; j < * colunas; j++){
             printf("%d\t", matriz[i][j]);
         }
@@ -168,12 +168,13 @@ void mostrarMatriz(int **matriz, int *linhas, int *colunas){
 
 void classMatriz(int *determinante){
 
-    if(determinante != 0){
-        printf("[+] Classificaçao: MATRIZ NÃO SINGULAR");
+    if(*determinante != 0){
+        printf("[+] Classificação: MATRIZ NÃO SINGULAR\n");
     }else{
-        printf("[+] Classificaçao: MATRIZ SINGULAR");
+        printf("[+] Classificação: MATRIZ SINGULAR\n");
     }
 }
+
 void calculoDeterminante(int **matriz, int *linhas){
     
     int dPrincipal = 1, 
@@ -185,13 +186,13 @@ void calculoDeterminante(int **matriz, int *linhas){
     switch (*linhas){
     //Ordem 1
     case 1:
-        printf("[+] Ordem 1 ");
+        printf("[+] Ordem 1 \n");
         printf("[+] Determinante = %d", matriz[0][0]);
         break;
     //Ordem 2
     case 2:
         
-        printf("[+] Ordem 2 ");
+        printf("[+] Ordem 2 \n");
         for (int i = 0; i < *linhas; i++){
             // printf("[+] Principal: a[%d][%d] \n", i+1, i+1);
             dPrincipal *= matriz[i][i];
@@ -282,10 +283,11 @@ void main(){
     // Veficar Matriz Quadrada
 
     if(linhas == colunas){
-        printf("[+] Matriz quadrada. Calculando determinante...\n");
+        printf("\n[+] Matriz quadrada. Calculando determinante...\n");
+        sleep(2);
         calculoDeterminante(matriz, &linhas);
     }else{
-        printf("[+] Matriz não quadrada. Não é possível calcular o determinante\n");
+        printf("\n[+] Matriz não quadrada. Não é possível calcular o determinante\n");
     }
     
 
